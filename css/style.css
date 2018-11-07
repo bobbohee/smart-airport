@@ -1,0 +1,60 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+#index .header {
+  padding: 10px;
+}
+#index .header div {
+  width: 210px;
+  margin: 0 auto;
+}
+#index .header div h1 {
+  float: left;
+  margin: 30px 20px 30px 10px;
+  font-size: 22px;
+}
+#index .header div img {
+  margin-top: 5px;
+}
+#index ul li a img{
+  margin: 15px;
+}
+#index ul li a h3 {
+  padding-top: 20px;
+  margin: 0;
+}
+#facilites h1 {
+  text-align: center;
+  margin: 0 auto;
+}
+#facilites ul li a {
+  font-size: 13px;
+}
+#depart div h4 {
+  font-size: 18px;
+  text-align: center
+}
+#depart div h5 {
+  font-size: 17px;
+}
+#car div h4 {
+  font-size: 18px;
+  text-align: center
+}
+#car div h5 {
+  font-size: 17px;
+}
+#car div p {
+  margin: 5px 0;
+}
+#weather .ui-select {
+  width: 45%;
+  float: left;
+  margin-left: 10px;
+  margin-bottom: 25px;
+}
+#weather ul li img {
+  float: left;
+  margin: 20px 20px 20px 0;
+}
