@@ -12,19 +12,20 @@ $(function () {
     console.log(res);
     var items = $(res).find("item");
     for (let i = 0; i < items.length; i++) {
+      var floorinfo = $(items[i]).find("floorinfo").text();
       var facilitynm = $(items[i]).find("facilitynm").text();   /* 가게 이름 */
       var lcnm = $(items[i]).find("lcnm").text();               /* 위치 */
       var servicetime = $(items[i]).find("servicetime").text(); /* 시간 */
 
-      var li = "<li class='ui-first-child ui-last-child'>" +
-                  "<a href='#' rel='external' class='ui-btn ui-btn-icon-right ui-icon-carat-r'>" + facilitynm + "<br>" + servicetime + "<br>" + lcnm + "</a>" +
+      var li = "<li class='ui-first-child ui-last-child li-facilites'>" +
+                  "<a href='#' rel='external' class='ui-btn ui-btn-icon-right ui-icon-carat-r'>" + floorinfo + " " + facilitynm + "</a>" +
                 "</li>";
       $("#facilites ul").append(li);
     }
   });
 
-  $("#facilites ul li a").click(function() {
-
+  $("#facilites").on("click", ".li-facilites", function() {
+    console.log(1);
   });
 
 });
