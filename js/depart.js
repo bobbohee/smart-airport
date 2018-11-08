@@ -17,7 +17,7 @@ $(function() {
     var cgthm = $(items[0]).find("cgthm").text();
     var hour = cgthm.substring(0, 2);
     var minute = cgthm.substring(2, 4);
-    var date = year + "년 " + month + "월 " + day + "일 " + hour + "시 " + minute + "분";
+    var date = year + "년 " + month + "월 " + day + "일 " + hour + "시 " + minute + "분 기준";
     var gate1 = $(items[0]).find("gate1").text();
     var gate2 = $(items[0]).find("gate2").text();
     var gate3 = $(items[0]).find("gate3").text();

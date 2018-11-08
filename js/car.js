@@ -17,18 +17,29 @@ $(function() {
     var day = datetm.substring(6, 8);
     var hour = datetm.substring(8, 10);
     var minute = datetm.substring(10, 12);
-    var date = year + "년 " + month + "월 " + day + "일 " + hour + "시 " + minute + "분";
+    var date = year + "년 " + month + "월 " + day + "일 " + hour + "시 " + minute + "분 기준";
     for (let i = 0; i < items.length; i++) {
       var floor = $(items[i]).find("floor").text();
       var parking = $(items[i]).find("parking").text();
       var parkingarea = $(items[i]).find("parkingarea").text();
-      var dan = "<p> * " + floor + "</p>" +
-      "<p>&nbsp&nbsp" + parkingarea + " 中 " + parking + "</p>";
       var danapd;
-      console.log(dan);
-      if (i >= 0 && i < 4) { danapd = $("#car .car-t1dan"); } 
-      else if (i >= 4 && i < 7) { danapd = $("#car .car-t2dan"); } 
-      else if (i >= 7 && i < 10) { danapd = $("#car .car-t1jan"); }
+      if (i >= 0 && i < 4) { 
+        danapd = $("#car .car-t1dan"); 
+        floor = floor.split("장");
+        floor = floor[1];
+      } 
+      else if (i >= 4 && i < 7) { 
+        danapd = $("#car .car-t2dan"); 
+        floor = floor.split("장");
+        floor = floor[1];
+      } 
+      else if (i >= 7 && i < 10) { 
+        danapd = $("#car .car-t1jan"); 
+        floor = floor.split(" ");
+        floor = floor[2] + " " + floor[3];
+      }
+      var dan = "<li>" + floor + "</br>" +
+      parkingarea + " 中 " + parking + "</li>";
       danapd.append(dan);
     }
     $("#car h4").append(date);

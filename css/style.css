@@ -1,6 +1,7 @@
 * {
   margin: 0;
   padding: 0;
+  font-family: 'Noto Sans KR', sans-serif;
 }
 #index .header {
   padding: 10px;
@@ -35,15 +36,18 @@
 #depart div h5 {
   font-size: 17px;
 }
-#car div h4 {
+#car .content h4 {
   font-size: 18px;
   text-align: center
 }
-#car div h5 {
+#car .content h5 {
   font-size: 17px;
 }
-#car div p {
-  margin: 5px 0;
+#car .content ul {
+  margin: 0 20px;
+}
+#car .content ul li {
+  margin: 7.5px 0;
 }
 #weather .ui-select {
   width: 45%;
