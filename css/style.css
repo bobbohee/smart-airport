@@ -36,6 +36,12 @@
 #depart div h5 {
   font-size: 17px;
 }
+#depart .depart-su p {
+  line-height: 50px;
+}
+#depart .depart-su img {
+  margin-left: -7.5px;
+}
 #car .content h4 {
   font-size: 18px;
   text-align: center

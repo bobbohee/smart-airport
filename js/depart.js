@@ -4,8 +4,34 @@ $(function() {
   
   var url = 'http://openapi.airport.kr/openapi/service/StatusOfDepartures/getDeparturesCongestion';
   url += '?' + encodeURIComponent('ServiceKey') + '=' + key;
-  
-  console.log(url);
+
+  function bakpeople( n ) {
+    var bak; var bakimg = "";
+    if (n < 100) {
+      return "";
+    }
+    bak = parseInt(n / 100);
+    for (let i = 0; i < bak; i++) {
+      bakimg += "<img src='./img/people-bak.png' width='40' height='40'>"
+    }
+    return bakimg;
+  }
+
+  function sippeople( n ) {
+    var bak; var sip; var sipimg = "";
+    if (n >= 100) {
+      bak = parseInt(n / 100);
+      n -= bak * 100;
+    }
+    sip = parseInt(n / 10);
+    if (n < 10) {
+      return "";
+    }
+    for (let i = 0; i < sip; i++) {
+      sipimg += "<img src='./img/people-sip.png' width='30' height='30'>"
+    }
+    return sipimg;
+  }
   
   $.get(url, function (res) {
     console.log(res);
@@ -18,26 +44,25 @@ $(function() {
     var hour = cgthm.substring(0, 2);
     var minute = cgthm.substring(2, 4);
     var date = year + "년 " + month + "월 " + day + "일 " + hour + "시 " + minute + "분 기준";
-    var gate1 = $(items[0]).find("gate1").text();
-    var gate2 = $(items[0]).find("gate2").text();
-    var gate3 = $(items[0]).find("gate3").text();
-    var gate4 = $(items[0]).find("gate4").text();
-    var gateinfo1 = $(items[0]).find("gateinfo1").text();
-    var gateinfo2 = $(items[0]).find("gateinfo2").text();
-    var gateinfo3 = $(items[0]).find("gateinfo3").text();
-    var gateinfo4 = $(items[0]).find("gateinfo4").text();
+    var gateinfo1 = parseInt( $(items[0]).find("gateinfo1").text() );
+    var gateinfo2 = parseInt( $(items[0]).find("gateinfo2").text() );
+    var gateinfo3 = parseInt( $(items[0]).find("gateinfo3").text() );
+    var gateinfo4 = parseInt( $(items[0]).find("gateinfo4").text() );
     
-    var departdo = 
-    "<p>" + "T1 2번 / T2 1번 : " + gate1 + "</p>" +
-    "<p>" + "T1 3번 / T2 2번 : " + gate2 + "</p>" +
-    "<p>" + "T1 4번 : " + gate3 + "</p>" +
-    "<p>" + "T1 5번 : " + gate4 + "</p>";
     var departsu = 
-    "<p>" + "T1 2번 / T2 1번 : " + gateinfo1 + "명</p>" +
-    "<p>" + "T1 3번 / T2 2번 : " + gateinfo2 + "명</p>" +
-    "<p>" + "T1 4번 : " + gateinfo3 + "명</p>" +
-    "<p>" + "T1 5번 : " + gateinfo4 + "명</p>";
-    $(".depart-do").append(departdo);
+    "<hr><p>" + 
+      "제 1여객터미널 2번 / 제 2여객터미널 1번" + "<br>" + 
+      bakpeople(gateinfo1) + sippeople(gateinfo1) + gateinfo1 + "명" + 
+    "</p><hr>" +
+    "<p>" + "제 1여객터미널 3번 / 제 2여객터미널 2번" + "<br>" + 
+      bakpeople(gateinfo2) + sippeople(gateinfo2) + gateinfo2 + "명" + 
+    "</p><hr>" +
+    "<p>" + "제 1여객터미널 4번" + "<br>" + 
+      bakpeople(gateinfo3) + sippeople(gateinfo3) + gateinfo3 + "명" + 
+    "</p><hr>" +
+    "<p>" + "제 1여객터미널 5번" + "<br>" + 
+      bakpeople(gateinfo4) + sippeople(gateinfo4) + gateinfo4 + "명" + 
+    "</p><hr>";
     $(".depart-su").append(departsu);
     $("h4").append(date);
   });
