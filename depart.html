@@ -11,7 +11,6 @@
   <link rel="stylesheet" href="./css/style.css">
   <script src="./js/jquery-1.11.0.js"></script>
   <script src="./js/jquery.mobile-1.4.5.js"></script>
-  <!-- <script src="./js/depart.js"></script> -->
 </head>
 
 <body>
@@ -90,17 +89,22 @@
 
       } // departAdd()
 
-      var key = 'qQyghynMjWVFQFaN3ZiF1neNgFaug%2FlVHSJQUgaXaBgNcG2dRjiAPV%2F0qFNoiUCcntIghxOYfmsHVMV6tbQUnw%3D%3D';
-      var url = 'http://openapi.airport.kr/openapi/service/StatusOfDepartures/getDeparturesCongestion';
-      url += '?' + encodeURIComponent('ServiceKey') + '=' + key;
-      url += '&' + encodeURIComponent('terno') + '=' + '1';
+      for (let i = 1; i <= 2; i++) {
+        
+        var key = 'qQyghynMjWVFQFaN3ZiF1neNgFaug%2FlVHSJQUgaXaBgNcG2dRjiAPV%2F0qFNoiUCcntIghxOYfmsHVMV6tbQUnw%3D%3D';
+        var url = 'http://openapi.airport.kr/openapi/service/StatusOfDepartures/getDeparturesCongestion';
+        url += '?' + encodeURIComponent('ServiceKey') + '=' + key;
+        url += '&' + encodeURIComponent('terno') + '=' + i;
+  
+        console.log(url);
+        $.ajax({
+          url: url,
+          success: function (data) {
+            departAdd(data);
+          }
+        }); // ajax
 
-      $.ajax({
-        url: url,
-        success: function (data) {
-          departAdd(data);
-        }
-      }); // ajax
+      }
 
     });
   </script>
