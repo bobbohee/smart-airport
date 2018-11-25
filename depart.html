@@ -10,7 +10,10 @@
   <link rel="stylesheet" href="./css/style.css">
   <script src="./js/jquery-1.11.0.js"></script>
   <script src="./js/jquery.mobile-1.4.5.js"></script>
+<<<<<<< HEAD
+=======
   <!-- <script src="./js/depart.js"></script> -->
+>>>>>>> c4736ecc6999a8a574fedb5ccc41c65180ce600e
 </head>
 <body>
   <div data-role="page" id="depart">
@@ -29,6 +32,14 @@
   <script>
     $(function () {
 
+<<<<<<< HEAD
+      function bakpeople(n) {
+        var bak;
+        var bakimg = "";
+        if (n < 100) {
+          return "";
+        }
+=======
       // var key = 'qQyghynMjWVFQFaN3ZiF1neNgFaug%2FlVHSJQUgaXaBgNcG2dRjiAPV%2F0qFNoiUCcntIghxOYfmsHVMV6tbQUnw%3D%3D';
       // var url = 'http://openapi.airport.kr/openapi/service/StatusOfDepartures/getDeparturesCongestion';
       // url += '?' + encodeURIComponent('ServiceKey') + '=' + key;
@@ -36,6 +47,7 @@
       function bakpeople(n) {
         var bak; var bakimg = "";
         if (n < 100) { return ""; }
+>>>>>>> c4736ecc6999a8a574fedb5ccc41c65180ce600e
         bak = parseInt(n / 100);
         for (let i = 0; i < bak; i++) {
           bakimg += "<img src='./img/people-bak.png' width='40' height='40'>"
@@ -44,13 +56,25 @@
       }
 
       function sippeople(n) {
+<<<<<<< HEAD
+        var bak;
+        var sip;
+        var sipimg = "";
+=======
         var bak; var sip; var sipimg = "";
+>>>>>>> c4736ecc6999a8a574fedb5ccc41c65180ce600e
         if (n >= 100) {
           bak = parseInt(n / 100);
           n -= bak * 100;
         }
         sip = parseInt(n / 10);
+<<<<<<< HEAD
+        if (n < 10) {
+          return "";
+        }
+=======
         if (n < 10) { return ""; }
+>>>>>>> c4736ecc6999a8a574fedb5ccc41c65180ce600e
         for (let i = 0; i < sip; i++) {
           sipimg += "<img src='./img/people-sip.png' width='30' height='30'>"
         }
@@ -59,6 +83,27 @@
 
       function departAdd(res) {
 
+<<<<<<< HEAD
+        var cgtdt = res.cgtdt[0];
+        var year = cgtdt.substring(0, 4);
+        var month = cgtdt.substring(4, 6);
+        var day = cgtdt.substring(6, 8);
+        var cgthm = res.cgthm[0];
+        var hour = cgthm.substring(0, 2);
+        var minute = cgthm.substring(2, 4);
+        var date = year + "년 " + month + "월 " + day + "일 " + hour + "시 " + minute + "분 기준";
+        var gateinfo1 = parseInt(res.gateinfo1[0]);
+        var gateinfo2 = parseInt(res.gateinfo2[0]);
+        var gateinfo3 = parseInt(res.gateinfo3[0]);
+        var gateinfo4 = parseInt(res.gateinfo4[0]);
+
+        var departsu =
+          "<hr><p>" +
+          "제 1여객터미널 2번" + "<br>" +
+          bakpeople(gateinfo1) + sippeople(gateinfo1) + gateinfo1 + "명" +
+          "</p><hr>" +
+          "<p>" + "제 1여객터미널 3번" + "<br>" +
+=======
         var items = $(res).find("item");
         var cgtdt = $(items[0]).find("cgtdt").text();
         var year = cgtdt.substring(0, 4);
@@ -79,6 +124,7 @@
           bakpeople(gateinfo1) + sippeople(gateinfo1) + gateinfo1 + "명" +
           "</p><hr>" +
           "<p>" + "제 1여객터미널 3번 / 제 2여객터미널 2번" + "<br>" +
+>>>>>>> c4736ecc6999a8a574fedb5ccc41c65180ce600e
           bakpeople(gateinfo2) + sippeople(gateinfo2) + gateinfo2 + "명" +
           "</p><hr>" +
           "<p>" + "제 1여객터미널 4번" + "<br>" +
@@ -95,7 +141,11 @@
       $.ajax({
         url: 'depart.php',
         success: function (data) {
+<<<<<<< HEAD
+          departAdd(JSON.parse(data));
+=======
           departAdd(data);
+>>>>>>> c4736ecc6999a8a574fedb5ccc41c65180ce600e
         }
       }); // ajax
 

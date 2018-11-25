@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,6 +13,7 @@
   <script src="./js/jquery.mobile-1.4.5.js"></script>
   <script src="./js/facilites.js"></script>
 </head>
+
 <body>
   <div data-role="page" id="facilites">
     <div data-role="header" data-theme="b">
@@ -19,12 +21,85 @@
       <h1>시설 정보</h1>
     </div> <!-- header -->
     <div data-role="content">
+<<<<<<< HEAD
+      <select name="facilitesName" id="facilitesName">
+        <option value="">상호명</option>
+=======
       <select name="airportCode" id="airportCode">
         <option value="">상호</option>
+>>>>>>> c4736ecc6999a8a574fedb5ccc41c65180ce600e
       </select>
       <br><br>
       <ul data-role="listview"></ul>
     </div> <!-- content -->
   </div>
+  <script>
+    $(function () {
+
+      function unique_facilitynm(res) {
+        var facilitynm = [];
+
+        for (let i = 0; i < res.length; i++) {
+          facilitynm.push(res[i].facilitynm[0]);
+        }
+
+        var unique = facilitynm.reduce(function (a, b) {
+          if (a.indexOf(b) < 0) a.push(b);
+          return a;
+        }, []);
+
+        return unique;
+      } // unique_facilitynm()
+
+      function getFacilites(res) {
+        var uni = unique_facilitynm(res);
+
+        for (let i = 0; i < uni.length; i++) {
+          var facilitynm = uni[i]; /* 가게 이름 */
+          var option = "<option value='" + facilitynm + "'>" + facilitynm + "</option>";
+          $("#facilitesName").append(option);
+        }
+      } // getFacilites()
+
+      function facilitesAdd(res) {
+        for (let i = 0; i < res.length; i++) {
+          var floorinfo = res[i].floorinfo[0];
+          var facilitynm = res[i].facilitynm[0]; /* 가게 이름 */
+          var lcnm = res[i].lcnm[0]; /* 위치 */
+          var servicetime = res[i].servicetime[0]; /* 시간 */
+
+          var li = "<li class='ui-first-child ui-last-child li-facilites'>" +
+            "<a href='#' rel='external' class='ui-btn ui-btn-icon-right ui-icon-carat-r'>" + floorinfo + " " +
+            facilitynm + "</a>" +
+            "</li>";
+          $("#facilites ul").append(li);
+        }
+      } // facilitesAdd()
+
+      $("#facilites").on("click", ".li-facilites", function () {
+        console.log(1);
+      });
+
+      $("#facilitesName").change(function() {
+        var facilitesName = $(this).val();
+        $.ajax({
+          url: 'facilites.php?facilitesName=' + facilitesName,
+          success: function (data) {
+            console.log(JSON.parse(data));
+            // getFacilites(JSON.parse(data));
+          }
+        }); // ajax
+      });
+
+      $.ajax({
+        url: 'facilites.php',
+        success: function (data) {
+          getFacilites(JSON.parse(data));
+        }
+      }); // ajax
+
+    });
+  </script>
 </body>
+
 </html>
