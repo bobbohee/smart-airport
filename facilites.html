@@ -21,13 +21,8 @@
       <h1>시설 정보</h1>
     </div> <!-- header -->
     <div data-role="content">
-<<<<<<< HEAD
       <select name="facilitesName" id="facilitesName">
         <option value="">상호명</option>
-=======
-      <select name="airportCode" id="airportCode">
-        <option value="">상호</option>
->>>>>>> c4736ecc6999a8a574fedb5ccc41c65180ce600e
       </select>
       <br><br>
       <ul data-role="listview"></ul>
@@ -82,13 +77,8 @@
 
       $("#facilitesName").change(function() {
         var facilitesName = $(this).val();
-        $.ajax({
-          url: 'facilites.php?facilitesName=' + facilitesName,
-          success: function (data) {
-            console.log(JSON.parse(data));
-            // getFacilites(JSON.parse(data));
-          }
-        }); // ajax
+        var url = 'facilites.php?facilitesName=' + encodeURIComponent(facilitesName);
+        location.href = url;
       });
 
       $.ajax({

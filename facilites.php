@@ -1,13 +1,14 @@
 <?php
-  $ch = curl_init();
 
-  $facilitesName = "";
-  if (isset($_GET["facilitesName"])) {
-    $facilitesName = $_GET["facilitesName"];
-  }
-
+$facilitesName = "";
+if (isset($_GET["facilitesName"])) {
+  $facilitesName = $_GET["facilitesName"];
+}
+$ch = curl_init();
+  
   $url = 'http://openapi.airport.kr/openapi/service/FacilitiesInformation/getFacilitesInfo?ServiceKey=qQyghynMjWVFQFaN3ZiF1neNgFaug%2FlVHSJQUgaXaBgNcG2dRjiAPV%2F0qFNoiUCcntIghxOYfmsHVMV6tbQUnw%3D%3D&ServiceKey=qQyghynMjWVFQFaN3ZiF1neNgFaug%252FlVHSJQUgaXaBgNcG2dRjiAPV%252F0qFNoiUCcntIghxOYfmsHVMV6tbQUnw%253D%253D&pageNo=1&numOfRows=363&lang=K&facilitynm=' . $facilitesName;
-  // echo $url;
+
+  echo $url;
 
   curl_setopt($ch, CURLOPT_URL, $url);
   curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
@@ -15,6 +16,8 @@
   curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
   $response = curl_exec($ch);
   curl_close($ch);
+
+  echo $response;
 
   $xml = simplexml_load_string($response);
   
@@ -39,6 +42,6 @@
     
   }
   
-  echo json_encode($facilites, JSON_UNESCAPED_UNICODE);
+  // echo json_encode($facilites, JSON_UNESCAPED_UNICODE);
   
 ?>
