@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,6 +13,7 @@
   <script src="./js/jquery.mobile-1.4.5.js"></script>
   <!-- <script src="./js/depart.js"></script> -->
 </head>
+
 <body>
   <div data-role="page" id="depart">
     <div data-role="header" data-theme="b">
@@ -22,16 +24,11 @@
       <br>
       <h4></h4>
       <br><br>
-      <h5>출국장 대기인수</h5><br>
       <p class="depart-su"></p>
     </div> <!-- content -->
   </div>
   <script>
     $(function () {
-
-      // var key = 'qQyghynMjWVFQFaN3ZiF1neNgFaug%2FlVHSJQUgaXaBgNcG2dRjiAPV%2F0qFNoiUCcntIghxOYfmsHVMV6tbQUnw%3D%3D';
-      // var url = 'http://openapi.airport.kr/openapi/service/StatusOfDepartures/getDeparturesCongestion';
-      // url += '?' + encodeURIComponent('ServiceKey') + '=' + key;
 
       function bakpeople(n) {
         var bak; var bakimg = "";
@@ -59,19 +56,21 @@
 
       function departAdd(res) {
 
-        var cgtdt = res.cgtdt[0];
+        var items = $(res).find("item");
+        var cgtdt = $(items[0]).find("cgtdt").text();
         var year = cgtdt.substring(0, 4);
         var month = cgtdt.substring(4, 6);
         var day = cgtdt.substring(6, 8);
-        var cgthm = res.cgthm[0];
+        var cgthm = $(items[0]).find("cgthm").text();
         var hour = cgthm.substring(0, 2);
         var minute = cgthm.substring(2, 4);
-        var date = year + "년 " + month + "월 " + day + "일 " + hour + "시 " + minute + "분 기준";
-        var gateinfo1 = parseInt(res.gateinfo1[0]);
-        var gateinfo2 = parseInt(res.gateinfo2[0]);
-        var gateinfo3 = parseInt(res.gateinfo3[0]);
-        var gateinfo4 = parseInt(res.gateinfo4[0]);
+        var date = year + "년 " + month + "월 " + day + "일 " + hour + "시 " + minute + "분";
 
+        var gateinfo1 = parseInt($(items[0]).find("gateinfo1").text());
+        var gateinfo2 = parseInt($(items[0]).find("gateinfo2").text());
+        var gateinfo3 = parseInt($(items[0]).find("gateinfo3").text());
+        var gateinfo4 = parseInt($(items[0]).find("gateinfo4").text());
+    
         var departsu =
           "<hr><p>" +
           "제 1여객터미널 2번" + "<br>" +
@@ -91,8 +90,13 @@
 
       } // departAdd()
 
+      var key = 'qQyghynMjWVFQFaN3ZiF1neNgFaug%2FlVHSJQUgaXaBgNcG2dRjiAPV%2F0qFNoiUCcntIghxOYfmsHVMV6tbQUnw%3D%3D';
+      var url = 'http://openapi.airport.kr/openapi/service/StatusOfDepartures/getDeparturesCongestion';
+      url += '?' + encodeURIComponent('ServiceKey') + '=' + key;
+      url += '&' + encodeURIComponent('terno') + '=' + '1';
+
       $.ajax({
-        url: 'depart.php',
+        url: url,
         success: function (data) {
           departAdd(data);
         }
