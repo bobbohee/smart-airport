@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="ko">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,7 +11,6 @@
   <script src="./js/jquery-1.11.0.js"></script>
   <script src="./js/jquery.mobile-1.4.5.js"></script>
 </head>
-
 <body>
   <div data-role="page" id="depart">
     <div data-role="header" data-theme="b">
@@ -36,7 +34,7 @@
           bakimg += "<img src='./img/people-bak.png' width='40' height='40'>"
         }
         return bakimg;
-      }
+      } // bakpeople()
 
       function sippeople(n) {
         var bak; var sip; var sipimg = "";
@@ -50,18 +48,19 @@
           sipimg += "<img src='./img/people-sip.png' width='30' height='30'>"
         }
         return sipimg;
-      }
+      } // sippeople()
 
       function departAdd(res, i) {
         var items = $(res).find("item");
-        var cgtdt = $(items[0]).find("cgtdt").text();
-        var year = cgtdt.substring(0, 4);
-        var month = cgtdt.substring(4, 6);
-        var day = cgtdt.substring(6, 8);
+        // var cgtdt = $(items[0]).find("cgtdt").text();
+        // var year = cgtdt.substring(0, 4);
+        // var month = cgtdt.substring(4, 6);
+        // var day = cgtdt.substring(6, 8);
+        // var date = year + "년 " + month + "월 " + day + "일 " + hour + "시 " + minute + "분";
         var cgthm = $(items[0]).find("cgthm").text();
         var hour = cgthm.substring(0, 2);
         var minute = cgthm.substring(2, 4);
-        var date = year + "년 " + month + "월 " + day + "일 " + hour + "시 " + minute + "분";
+        var date = hour + "시 " + minute + "분 기준";
 
         if (i == 1) { 
           depart1($(items[0])); 
@@ -93,7 +92,7 @@
           "</p>";
         $(".depart-su").append(departsu);
         requestDepart(2);
-      }
+      } // depart1()
 
       function depart2(item) {
         var gateinfo1 = parseInt(item.find("gateinfo1").text());
@@ -108,10 +107,9 @@
           bakpeople(gateinfo2) + sippeople(gateinfo2) + gateinfo2 + "명" +
           "</p><hr>";
         $(".depart-su").append(departsu);
-      }
+      } // depart2()
 
       function requestDepart(i) {
-
         var key = 'qQyghynMjWVFQFaN3ZiF1neNgFaug%2FlVHSJQUgaXaBgNcG2dRjiAPV%2F0qFNoiUCcntIghxOYfmsHVMV6tbQUnw%3D%3D';
         var url = 'http://openapi.airport.kr/openapi/service/StatusOfDepartures/getDeparturesCongestion';
         url += '?' + encodeURIComponent('ServiceKey') + '=' + key;
@@ -124,12 +122,9 @@
             departAdd(data, i);
           }
         }); // ajax
-
-      }
+      } // requestDepart()
       requestDepart(1);
-
     });
   </script>
 </body>
-
 </html>
