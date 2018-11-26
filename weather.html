@@ -8,14 +8,9 @@
   <title>공항 서비스</title>
   <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR" rel="stylesheet">
   <link rel="stylesheet" href="./css/jquery.mobile-1.4.5.css">
-  <link rel="stylesheet" href="./css/bootstrap.css">
   <link rel="stylesheet" href="./css/style.css">
   <script src="./js/jquery-1.11.0.js"></script>
   <script src="./js/jquery.mobile-1.4.5.js"></script>
-  <script src="./js/bootstrap.js"></script>
-  <script src="./js/script.js"></script>
-  <script src="./js/weather.js"></script>
-
 </head>
 
 <body>
@@ -29,19 +24,157 @@
         <option value="">항공사</option>
         <option value="KE">대한항공</option>
         <option value="OZ">아시아나항공</option>
-        <option value="RS">에어서울</option>
         <option value="7C">제주항공</option>
+        <option value="FM">상하이항공</option>
         <option value="TW">티웨이항공</option>
         <option value="LJ">진에어</option>
-        <option value="HX">홍콩항공</option>
+        <option value="RS">에어서울</option>
       </select>
       <select name="airportCode" id="airportCode">
         <option value="">출발 공항</option>
       </select>
       <br>
       <ul data-role="listview"></ul>
+      <div data-role="popup" id="popupBasic" data-position-to="window" data-overlay-theme="b">
+        <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-delete ui-btn-icon-notext ui-btn-right"></a>
+        <h4 class="aircode"></h4>
+        <p class="date"></p>
+        <p class="flightId"></p>
+        <p class="himidity"></p>
+        <p class="maxtem"></p>
+        <p class="mintem"></p>
+        <p class="remark"></p>
+        <p class="wimage"></p>
+        <p class="wind"></p>
+      </div>
     </div> <!-- content -->
   </div>
+  <script>
+    $(function () {
+      function getAirCode(airline, airport) {
+        var date = new Date();
+        var hour = date.getHours();
+        var minute = date.getMinutes();
+        var now = hour + "" + minute;
+
+        var airline = airline ? airline : "";
+        var airport = airport ? airport : "";
+        var key =
+          'gJ78ix8cusfxeyLnq1YctFmmQf2SDDru3HN7rfajwq%2BMQLkpdaK2UPdcRVSMh8nvslziLpYRJceimnG%2BPOJIdw%3D%3D';
+        var url = 'http://openapi.airport.kr/openapi/service/StatusOfPassengerWeahter/getPassengerDeparturesW';
+        url += '?' + encodeURIComponent('ServiceKey') + '=' + key;
+        url += '&' + encodeURIComponent('ServiceKey') + '=' + encodeURIComponent(key);
+        url += '&' + encodeURIComponent('pageNo') + '=' + encodeURIComponent('1');
+        url += '&' + encodeURIComponent('numOfRows') + '=' + encodeURIComponent('500');
+        url += '&' + encodeURIComponent('from_time') + '=' + encodeURIComponent(now);
+        url += '&' + encodeURIComponent('to_time') + '=' + encodeURIComponent('2400');
+        url += '&' + encodeURIComponent('airline') + '=' + encodeURIComponent(airline); /* 항공사 코드 */
+        url += '&' + encodeURIComponent('airport') + '=' + encodeURIComponent(airport); /* 출발지 공항 코드 */
+        url += '&' + encodeURIComponent('lang') + '=' + encodeURIComponent('K');
+        console.log(url);
+        if (airport) {
+          $.ajax({
+            url: url,
+            success: function (data) {
+              weatherAdd(data);
+            }
+          }); // ajax
+        } else {
+          $.ajax({
+            url: url,
+            success: function (data) {
+              airportAdd(data);
+            }
+          }); // ajax
+        }
+      } // getAirCode()
+
+      function unique_airport(items) {
+        var airport = [];
+        for (let i = 0; i < items.length; i++) {
+          airport.push($(items[i]).find("airport").text());
+        }
+
+        var unique = airport.reduce(function (a, b) {
+          if (a.indexOf(b) < 0) a.push(b);
+          return a;
+        }, []);
+        return unique;
+      } // unique_airport()
+
+      function unique_airportCode(items) {
+        var airportCode = [];
+        for (let i = 0; i < items.length; i++) {
+          airportCode.push($(items[i]).find("airportCode").text());
+        }
+
+        var unique = airportCode.reduce(function (a, b) {
+          if (a.indexOf(b) < 0) a.push(b);
+          return a;
+        }, []);
+        return unique;
+      } // unique_airportCode()
+
+      function airportAdd(res) {
+        var airport = unique_airport($(res).find("item"));
+        var airportCode = unique_airportCode($(res).find("item"));
+
+        for (let i = 0; i < airport.length; i++) {
+          var option = "<option value='" + airportCode[i] + "'>" + airport[i] + "</option>";
+          $("#airportCode").append(option);
+        }
+      } // getFacilites()
+
+      function weatherAdd(res) {
+        $("#weather ul li").remove();
+        console.log(res);
+
+        var items = $(res).find("item");
+        if (!items) { alert("검색 결과가 없습니다"); }
+        for (let i = 0; i < items.length; i++) {
+          var airline = $(items[i]).find("airline").text();                     // 항공사
+          var airport = $(items[i]).find("airport").text();                     // 출발 공항          
+          var estimatedDateTime = $(items[i]).find("estimatedDateTime").text(); // 도착 시간
+          var hour = estimatedDateTime.substring(0, 2);
+          var bun = estimatedDateTime.substring(2, 4);
+          var flightId = $(items[i]).find("flightId").text();                   // 편명
+          var himidity = $(items[i]).find("himidity").text();                   // 습도
+          var maxtem = $(items[i]).find("maxtem").text();                       // 최고 기온
+          var mintem = $(items[i]).find("mintem").text();                       // 최저 기온
+          var remark = $(items[i]).find("remark").text();                       // 운항 상태
+          var wimage = $(items[i]).find("wimage").text();                       // 날씨 이미지
+          var wind = $(items[i]).find("wind").text();                           // 풍속   
+          var yoil = $(items[i]).find("yoil").text();                           // 요일
+          var date = yoil + "요일 " + hour + "시 " + bun + "분";
+          if (!wimage) { wimage = './img/no.png'; }
+          var li = "<li class='ui-first-child ui-last-child'>" +
+                      "<a href='#popupBasic' data-rel='popup' data-transition='pop' class='ui-btn ui-corner-all ui-shadow ui-btn-inline'>" +
+                        "<img src='" + wimage + "' width='50' height='50' />" +
+                        "<p>" + "도착 : " + yoil + "요일 " + hour + "시 " + bun + "분" + "</p>" +
+                        "<p>" + "편명 : " + flightId + "</p>" +
+                        "<p>" + "풍속 : " + wind + "m.s / " + "습도 : " + himidity + "%</p>" +
+                        "<p>" + "최고 : " + maxtem + "도" + " / " + "최저 : " + mintem + "도</p>" +
+                        "<input type='hidden' class='item' value='" + i + "'>" +
+                      "</a>" +
+                    "</li>";
+          $("#weather ul").append(li);
+        }
+      } // weatherAdd()
+
+      $("#airlineCode").on("change", function () {
+        var airlineCode = $(this).val();
+        $("#airportCode option").remove();
+        $("#airportCode").append("<option value=''>출발 공항</option>");
+        getAirCode(airlineCode);
+      });
+
+      $("#airportCode").on("change", function () {
+        var airlineCode = $("#airlineCode").val();
+        var airportCode = $(this).val();
+        getAirCode(airlineCode, airportCode);
+      });
+    });
+  </script>
 </body>
 
 </html>
