@@ -28,7 +28,6 @@
   </div>
   <script>
     $(function () {
-
       function bakpeople(n) {
         var bak; var bakimg = "";
         if (n < 100) { return ""; }
@@ -53,8 +52,7 @@
         return sipimg;
       }
 
-      function departAdd(res) {
-
+      function departAdd(res, i) {
         var items = $(res).find("item");
         var cgtdt = $(items[0]).find("cgtdt").text();
         var year = cgtdt.substring(0, 4);
@@ -65,11 +63,20 @@
         var minute = cgthm.substring(2, 4);
         var date = year + "년 " + month + "월 " + day + "일 " + hour + "시 " + minute + "분";
 
-        var gateinfo1 = parseInt($(items[0]).find("gateinfo1").text());
-        var gateinfo2 = parseInt($(items[0]).find("gateinfo2").text());
-        var gateinfo3 = parseInt($(items[0]).find("gateinfo3").text());
-        var gateinfo4 = parseInt($(items[0]).find("gateinfo4").text());
-    
+        if (i == 1) { 
+          depart1($(items[0])); 
+        } else { 
+          depart2($(items[0])); 
+          $("h4").append(date); 
+        }
+      } // departAdd()
+
+      function depart1(item) {
+        var gateinfo1 = parseInt(item.find("gateinfo1").text());
+        var gateinfo2 = parseInt(item.find("gateinfo2").text());
+        var gateinfo3 = parseInt(item.find("gateinfo3").text());
+        var gateinfo4 = parseInt(item.find("gateinfo4").text());
+
         var departsu =
           "<hr><p>" +
           "제 1여객터미널 2번" + "<br>" +
@@ -83,28 +90,43 @@
           "</p><hr>" +
           "<p>" + "제 1여객터미널 5번" + "<br>" +
           bakpeople(gateinfo4) + sippeople(gateinfo4) + gateinfo4 + "명" +
+          "</p>";
+        $(".depart-su").append(departsu);
+        requestDepart(2);
+      }
+
+      function depart2(item) {
+        var gateinfo1 = parseInt(item.find("gateinfo1").text());
+        var gateinfo2 = parseInt(item.find("gateinfo2").text());
+
+        var departsu =
+          "<hr><p>" +
+          "제 2여객터미널 2번" + "<br>" +
+          bakpeople(gateinfo1) + sippeople(gateinfo1) + gateinfo1 + "명" +
+          "</p><hr>" +
+          "<p>" + "제 2여객터미널 3번" + "<br>" +
+          bakpeople(gateinfo2) + sippeople(gateinfo2) + gateinfo2 + "명" +
           "</p><hr>";
         $(".depart-su").append(departsu);
-        $("h4").append(date);
+      }
 
-      } // departAdd()
+      function requestDepart(i) {
 
-      for (let i = 1; i <= 2; i++) {
-        
         var key = 'qQyghynMjWVFQFaN3ZiF1neNgFaug%2FlVHSJQUgaXaBgNcG2dRjiAPV%2F0qFNoiUCcntIghxOYfmsHVMV6tbQUnw%3D%3D';
         var url = 'http://openapi.airport.kr/openapi/service/StatusOfDepartures/getDeparturesCongestion';
         url += '?' + encodeURIComponent('ServiceKey') + '=' + key;
         url += '&' + encodeURIComponent('terno') + '=' + i;
-  
+
         console.log(url);
         $.ajax({
           url: url,
           success: function (data) {
-            departAdd(data);
+            departAdd(data, i);
           }
         }); // ajax
 
       }
+      requestDepart(1);
 
     });
   </script>
