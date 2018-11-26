@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="ko">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,9 +10,7 @@
   <link rel="stylesheet" href="./css/style.css">
   <script src="./js/jquery-1.11.0.js"></script>
   <script src="./js/jquery.mobile-1.4.5.js"></script>
-  <script src="./js/facilites.js"></script>
 </head>
-
 <body>
   <div data-role="page" id="facilites">
     <div data-role="header" data-theme="b">
@@ -26,70 +23,108 @@
       </select>
       <br><br>
       <ul data-role="listview"></ul>
+      <div data-role="popup" id="popupBasic" data-position-to="window" data-overlay-theme="b">
+        <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-delete ui-btn-icon-notext ui-btn-right"></a>
+        <h4 class="facilitynm"></h4>
+        <p class="lcnm"></p>
+        <p class="servicetime"></p>
+        <p class="tel"></p>
+      </div>
     </div> <!-- content -->
   </div>
   <script>
     $(function () {
-
-      function unique_facilitynm(res) {
+      function unique_facilitynm(items) {
         var facilitynm = [];
-
-        for (let i = 0; i < res.length; i++) {
-          facilitynm.push(res[i].facilitynm[0]);
+        for (let i = 0; i < items.length; i++) {
+          facilitynm.push($(items[i]).find("facilitynm").text());
         }
 
         var unique = facilitynm.reduce(function (a, b) {
           if (a.indexOf(b) < 0) a.push(b);
           return a;
         }, []);
-
         return unique;
       } // unique_facilitynm()
 
       function getFacilites(res) {
-        var uni = unique_facilitynm(res);
-
+        var uni = unique_facilitynm($(res).find("item"));
+        
         for (let i = 0; i < uni.length; i++) {
-          var facilitynm = uni[i]; /* 가게 이름 */
+          var facilitynm = uni[i];
           var option = "<option value='" + facilitynm + "'>" + facilitynm + "</option>";
           $("#facilitesName").append(option);
         }
       } // getFacilites()
 
       function facilitesAdd(res) {
-        for (let i = 0; i < res.length; i++) {
-          var floorinfo = res[i].floorinfo[0];
-          var facilitynm = res[i].facilitynm[0]; /* 가게 이름 */
-          var lcnm = res[i].lcnm[0]; /* 위치 */
-          var servicetime = res[i].servicetime[0]; /* 시간 */
-
+        var items = $(res).find("item");
+        for (let i = 0; i < items.length; i++) {
+          var facilitynm = $(items[i]).find("facilitynm").text();   /* 가게 이름 */
+          var floorinfo = $(items[i]).find("floorinfo").text();     /* 층 수 */
+          var lcnm = $(items[i]).find("lcnm").text();               /* 위치 */
+          var servicetime = $(items[i]).find("servicetime").text(); /* 시간 */
+          var tel = $(items[i]).find("tel").text();                 /* 전화 번호 */
+            
           var li = "<li class='ui-first-child ui-last-child li-facilites'>" +
-            "<a href='#' rel='external' class='ui-btn ui-btn-icon-right ui-icon-carat-r'>" + floorinfo + " " +
-            facilitynm + "</a>" +
-            "</li>";
+                      "<a href='#popupBasic' data-rel='popup' data-rel='popup' data-transition='pop' class='ui-btn ui-corner-all ui-shadow ui-btn-inline'>" + floorinfo + " " + facilitynm + "</a>" +
+                      "<input type='hidden' class='facilitynm' value='" + facilitynm + "'>" +
+                      "<input type='hidden' class='lcnm' value='" + lcnm + "'>" +
+                      "<input type='hidden' class='servicetime' value='" + servicetime + "'>" +
+                      "<input type='hidden' class='tel' value='" + tel + "'>" +
+                    "</li>";
           $("#facilites ul").append(li);
         }
       } // facilitesAdd()
 
       $("#facilites").on("click", ".li-facilites", function () {
-        console.log(1);
-      });
+        var facilitynm = $(this).children(".facilitynm").val();
+        var lcnm = $(this).children(".lcnm").val();              
+        var servicetime = $(this).children(".servicetime").val();
+        var tel = $(this).children(".tel").val();
 
-      $("#facilitesName").change(function() {
+        $("#popupBasic .facilitynm").text(facilitynm);
+        $("#popupBasic .lcnm").text(lcnm);
+        $("#popupBasic .servicetime").text(servicetime);
+        $("#popupBasic .tel").text(tel);
+      }); // popup
+
+      $("#facilitesName").change(function () {
         var facilitesName = $(this).val();
-        var url = 'facilites.php?facilitesName=' + encodeURIComponent(facilitesName);
-        location.href = url;
-      });
+        requestFacilites(facilitesName);
+        $("#facilites ul li").remove();
+      }); // select change
 
-      $.ajax({
-        url: 'facilites.php',
-        success: function (data) {
-          getFacilites(JSON.parse(data));
+      function requestFacilites(facilitynm) {
+        var facilitynm = facilitynm ? facilitynm : '';
+        var key = 'qQyghynMjWVFQFaN3ZiF1neNgFaug%2FlVHSJQUgaXaBgNcG2dRjiAPV%2F0qFNoiUCcntIghxOYfmsHVMV6tbQUnw%3D%3D';
+        var url = 'http://openapi.airport.kr/openapi/service/FacilitiesInformation/getFacilitesInfo';
+        url += '?' + encodeURIComponent('ServiceKey') + '=' + key;
+        url += '&' + encodeURIComponent('ServiceKey') + '=' + encodeURIComponent(key);
+        url += '&' + encodeURIComponent('pageNo') + '=' + encodeURIComponent('1');
+        url += '&' + encodeURIComponent('numOfRows') + '=' + encodeURIComponent('400');
+        url += '&' + encodeURIComponent('lang') + '=' + encodeURIComponent('K');
+        url += '&' + encodeURIComponent('facilitynm') + '=' + encodeURIComponent(facilitynm);
+        console.log(url);
+
+        if (facilitynm) {
+          $.ajax({
+            url: url,
+            success: function (data) {
+              facilitesAdd(data);
+            }
+          }); // ajax
+        } else {
+          $.ajax({
+            url: url,
+            success: function (data) {
+              getFacilites(data);
+            }
+          }); // ajax
         }
-      }); // ajax
-
+      } // requestFacilites()
+      requestFacilites();
     });
   </script>
 </body>
-
 </html>
