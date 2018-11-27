@@ -12,11 +12,11 @@
 }
 #index .header div h1 {
   float: left;
-  margin: 30px 20px 30px 10px;
+  margin: 25px 0px 20px 30px;
   font-size: 22px;
 }
 #index .header div img {
-  margin-top: 5px;
+  margin: 25px 0px 20px 20px;
 }
 #index ul li a img{
   margin: 15px;
@@ -56,12 +56,27 @@
   margin: 7.5px 0;
 }
 #weather .ui-select {
-  width: 45%;
+  width: 47%;
   float: left;
-  margin-left: 10px;
-  margin-bottom: 25px;
+  padding: 10px 1.5% 25px 1.5%;
+  margin: 0;
 }
-#weather ul li img {
+#weather .airlist {
+  clear: both;
+}
+#weather .airlist li img {
   float: left;
-  margin: 20px 20px 20px 0;
+  margin: 20px 20px 20px 5px;
+}
+#weather .airlist li p {
+  font-size: 14px;
+  line-height: 26px;
+}
+#weather #popupBasic {
+  padding: 10px;
+}
+#weather #popupBasic img {
+  width: 80px;
+  height: 80px;
+  margin: 10px 60px;
 }

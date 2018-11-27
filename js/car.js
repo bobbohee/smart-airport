@@ -1,6 +1,6 @@
 $(function() {
 
-  var key = 'qQyghynMjWVFQFaN3ZiF1neNgFaug%2FlVHSJQUgaXaBgNcG2dRjiAPV%2F0qFNoiUCcntIghxOYfmsHVMV6tbQUnw%3D%3D';
+  var key = 'gJ78ix8cusfxeyLnq1YctFmmQf2SDDru3HN7rfajwq%2BMQLkpdaK2UPdcRVSMh8nvslziLpYRJceimnG%2BPOJIdw%3D%3D';
   
   var url = 'http://openapi.airport.kr/openapi/service/StatusOfParking/getTrackingParking'; /*URL*/
   url += '?' + encodeURIComponent('ServiceKey') + '=' + key; /*Service Key*/
