@@ -48,12 +48,19 @@
 }
 #car .content h5 {
   font-size: 17px;
+  margin: 10px 0;
 }
-#car .content ul {
-  margin: 0 20px;
+#car .content ul li img {
+  width: 24px;
+  float: left;
+  margin: 14px 16px 14px 0;
 }
-#car .content ul li {
-  margin: 7.5px 0;
+#car .content ul li p {
+  font-size: 15px;
+  margin: 5px 0;
+}
+#car .content ul li .floor {
+  font-weight: bold;
 }
 #weather .ui-select {
   width: 47%;
