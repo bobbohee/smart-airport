@@ -34,19 +34,15 @@
         <option value="">출발 공항</option>
       </select>
       <br>
-      <ul data-role="listview"></ul>
+      <ul data-role="listview" class="airlist"></ul>
       <div data-role="popup" id="popupBasic" data-position-to="window" data-overlay-theme="b">
         <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-delete ui-btn-icon-notext ui-btn-right"></a>
-        <h4 class="aircode"></h4>
+        <img class="wimage">
+        <h4 class="air"></h4>
         <p class="date"></p>
-        <p class="flightId"></p>
-        <p class="himidity"></p>
-        <p class="maxtem"></p>
-        <p class="mintem"></p>
-        <p class="remark"></p>
-        <p class="wimage"></p>
-        <p class="wind"></p>
-      </div>
+        <p class="handw"></p>
+        <p class="tem"></p>
+      </div> <!-- popup -->
     </div> <!-- content -->
   </div>
   <script>
@@ -59,8 +55,7 @@
 
         var airline = airline ? airline : "";
         var airport = airport ? airport : "";
-        var key =
-          'gJ78ix8cusfxeyLnq1YctFmmQf2SDDru3HN7rfajwq%2BMQLkpdaK2UPdcRVSMh8nvslziLpYRJceimnG%2BPOJIdw%3D%3D';
+        var key = 'gJ78ix8cusfxeyLnq1YctFmmQf2SDDru3HN7rfajwq%2BMQLkpdaK2UPdcRVSMh8nvslziLpYRJceimnG%2BPOJIdw%3D%3D';
         var url = 'http://openapi.airport.kr/openapi/service/StatusOfPassengerWeahter/getPassengerDeparturesW';
         url += '?' + encodeURIComponent('ServiceKey') + '=' + key;
         url += '&' + encodeURIComponent('ServiceKey') + '=' + encodeURIComponent(key);
@@ -134,27 +129,35 @@
         for (let i = 0; i < items.length; i++) {
           var airline = $(items[i]).find("airline").text();                     // 항공사
           var airport = $(items[i]).find("airport").text();                     // 출발 공항          
+          var flightId = $(items[i]).find("flightId").text();                   // 편명
           var estimatedDateTime = $(items[i]).find("estimatedDateTime").text(); // 도착 시간
           var hour = estimatedDateTime.substring(0, 2);
           var bun = estimatedDateTime.substring(2, 4);
-          var flightId = $(items[i]).find("flightId").text();                   // 편명
           var himidity = $(items[i]).find("himidity").text();                   // 습도
           var maxtem = $(items[i]).find("maxtem").text();                       // 최고 기온
           var mintem = $(items[i]).find("mintem").text();                       // 최저 기온
-          var remark = $(items[i]).find("remark").text();                       // 운항 상태
           var wimage = $(items[i]).find("wimage").text();                       // 날씨 이미지
           var wind = $(items[i]).find("wind").text();                           // 풍속   
           var yoil = $(items[i]).find("yoil").text();                           // 요일
           var date = yoil + "요일 " + hour + "시 " + bun + "분";
+          var air = airline + " " + airport + " " + flightId + " ";
+          var handw = "풍속 : " + wind + "m.s / " + "습도 : " + himidity + "%";
+          var tem = "최고 : " + maxtem + "도" + " / " + "최저 : " + mintem + "도";
           if (!wimage) { wimage = './img/no.png'; }
-          var li = "<li class='ui-first-child ui-last-child'>" +
+          var li = "<li class='ui-first-child ui-last-child li-air'>" +
                       "<a href='#popupBasic' data-rel='popup' data-transition='pop' class='ui-btn ui-corner-all ui-shadow ui-btn-inline'>" +
                         "<img src='" + wimage + "' width='50' height='50' />" +
-                        "<p>" + "도착 : " + yoil + "요일 " + hour + "시 " + bun + "분" + "</p>" +
-                        "<p>" + "편명 : " + flightId + "</p>" +
-                        "<p>" + "풍속 : " + wind + "m.s / " + "습도 : " + himidity + "%</p>" +
-                        "<p>" + "최고 : " + maxtem + "도" + " / " + "최저 : " + mintem + "도</p>" +
-                        "<input type='hidden' class='item' value='" + i + "'>" +
+                        "<p>" + 
+                          "도착 : " + yoil + "요일 " + hour + "시 " + bun + "분" + "<br>" +
+                          "편명 : " + flightId + "<br>" +
+                          "최고 : " + maxtem + "도" + " / " + "최저 : " + mintem + "도<br>" +
+                          "<input type='hidden' id='date' value='" + date + "'>" +
+                          "<input type='hidden' id='air' value='" + air + "'>" +
+                          "<input type='hidden' id='himidity' value='" + himidity + "'>" +
+                          "<input type='hidden' id='handw' value='" + handw + "'>" +
+                          "<input type='hidden' id='tem' value='" + tem + "'>" +
+                          "<input type='hidden' id='wimage' value='" + wimage + "'>" +
+                        "</p>" + 
                       "</a>" +
                     "</li>";
           $("#weather ul").append(li);
@@ -173,6 +176,22 @@
         var airportCode = $(this).val();
         getAirCode(airlineCode, airportCode);
       });
+
+      $(".airlist").on("click", ".li-air", function () {
+        var parent = $(this).children("a").children("p");
+        var date = parent.children("#date").val();
+        var air = parent.children("#air").val();              
+        var himidity  = parent.children("#handw").val();
+        var maxtem = parent.children("#tem").val();
+        var wimage  = parent.children("#wimage").val();
+        console.log(wimage);
+
+        $("#popupBasic .wimage").attr("src", wimage);
+        $("#popupBasic .date").text(date + " 도착");
+        $("#popupBasic .air").text(air);
+        $("#popupBasic .handw").text(himidity);
+        $("#popupBasic .tem").text(maxtem);
+      }); // popup
     });
   </script>
 </body>
