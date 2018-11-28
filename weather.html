@@ -48,11 +48,6 @@
   <script>
     $(function () {
       function getAirCode(airline, airport) {
-        var date = new Date();
-        var hour = date.getHours();
-        var minute = date.getMinutes();
-        var now = hour + "" + minute;
-
         var airline = airline ? airline : "";
         var airport = airport ? airport : "";
         var key = 'gJ78ix8cusfxeyLnq1YctFmmQf2SDDru3HN7rfajwq%2BMQLkpdaK2UPdcRVSMh8nvslziLpYRJceimnG%2BPOJIdw%3D%3D';
@@ -61,7 +56,7 @@
         url += '&' + encodeURIComponent('ServiceKey') + '=' + encodeURIComponent(key);
         url += '&' + encodeURIComponent('pageNo') + '=' + encodeURIComponent('1');
         url += '&' + encodeURIComponent('numOfRows') + '=' + encodeURIComponent('500');
-        url += '&' + encodeURIComponent('from_time') + '=' + encodeURIComponent(now);
+        url += '&' + encodeURIComponent('from_time') + '=' + encodeURIComponent('0000');
         url += '&' + encodeURIComponent('to_time') + '=' + encodeURIComponent('2400');
         url += '&' + encodeURIComponent('airline') + '=' + encodeURIComponent(airline); /* 항공사 코드 */
         url += '&' + encodeURIComponent('airport') + '=' + encodeURIComponent(airport); /* 출발지 공항 코드 */

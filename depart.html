@@ -52,15 +52,15 @@
 
       function departAdd(res, i) {
         var items = $(res).find("item");
-        // var cgtdt = $(items[0]).find("cgtdt").text();
+        var cgtdt = $(items[0]).find("cgtdt").text();
         // var year = cgtdt.substring(0, 4);
-        // var month = cgtdt.substring(4, 6);
-        // var day = cgtdt.substring(6, 8);
+        var month = cgtdt.substring(4, 6);
+        var day = cgtdt.substring(6, 8);
         // var date = year + "년 " + month + "월 " + day + "일 " + hour + "시 " + minute + "분";
         var cgthm = $(items[0]).find("cgthm").text();
         var hour = cgthm.substring(0, 2);
         var minute = cgthm.substring(2, 4);
-        var date = hour + "시 " + minute + "분 기준";
+        var date = month + "월 " + day + "일 " + hour + "시 " + minute + "분 기준";
 
         if (i == 1) { 
           depart1($(items[0])); 
