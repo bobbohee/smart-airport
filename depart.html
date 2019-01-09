@@ -1,10 +1,12 @@
+<!-- HTML5 -->
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" dir="ltr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>공항 서비스</title>
+  <link rel="shortcut icon" href="./img/favicon.png" type="image/png">
   <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR" rel="stylesheet">
   <link rel="stylesheet" href="./css/jquery.mobile-1.4.5.css">
   <link rel="stylesheet" href="./css/style.css">
@@ -23,7 +25,7 @@
       <br><br>
       <p class="depart-su"></p>
     </div> <!-- content -->
-  </div>
+  </div> <!-- page -->
   <script>
     $(function () {
       function bakpeople(n) {
@@ -115,7 +117,6 @@
         url += '?' + encodeURIComponent('ServiceKey') + '=' + key;
         url += '&' + encodeURIComponent('terno') + '=' + i;
 
-        console.log(url);
         $.ajax({
           url: url,
           success: function (data) {
